@@ -1,0 +1,37 @@
+﻿@model List<SE_Project.Models.User>
+@{
+    ViewData["Title"] = "Index";
+
+}
+<h3>Index</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+
+
