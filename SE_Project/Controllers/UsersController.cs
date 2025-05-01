@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SE_Project.Data;
 using SE_Project.Models;
@@ -22,11 +23,20 @@ namespace SE_Project.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Roles = Enum.GetValues(typeof(Role))
+                        .Cast<Role>()
+                        .Select(r => new SelectListItem
+                        {
+                            Value = r.ToString(),
+                            Text = r.ToString()
+                        }).ToList();
+
             return View();
+            
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id, Name, Email")] User user)
+        public async Task<IActionResult> Create([Bind("Id, FirstName,LastName,Password, Email,BirthDate,Role")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -45,7 +55,7 @@ namespace SE_Project.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Email")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, FirstName,LastName,Password, Email,BirthDate,Role")] User user)
         {
             if (ModelState.IsValid)
             {

@@ -18,6 +18,15 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult CreatorPage()
+    {
+        if(!IsAdmin())
+        {
+            return RedirectToAction("Privacy"); // Return to Privacy
+        }
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
@@ -28,4 +37,11 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    private bool IsAdmin()
+    {
+        return HttpContext.Session.GetString("UserRole") == "Admin";
+    }
+
+
 }
