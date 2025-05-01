@@ -9,6 +9,13 @@ namespace SE_Project.Data
         {
             
         }
+
         public DbSet<User> Users { get; set; }
+        public DbSet<Song> Songs { get; set; }
+        public DbSet<Playlist> Playlists { get; set; }
+        public DbSet<PlaylistSong> PlaylistSongs { get; set; }
+
+
+        
     }
 }

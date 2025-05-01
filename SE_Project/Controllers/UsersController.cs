@@ -38,7 +38,7 @@ namespace SE_Project.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             return View(user);
@@ -56,7 +56,7 @@ namespace SE_Project.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             return View(user);

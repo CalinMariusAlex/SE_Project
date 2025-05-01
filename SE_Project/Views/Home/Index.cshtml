@@ -1,8 +1,37 @@
 ﻿@{
+
     ViewData["Title"] = "Home Page";
+
+    Layout = "_LayoutHome";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="featured-content">
+    <h2>Playlists</h2>
+    <div class="row">
+        @foreach (var playlist in Model.Playlists)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="playlist-card">
+                    <img src="@(string.IsNullOrEmpty(playlist.ImagePath) ? "/Content/Images/default-playlist.jpg" : playlist.ImagePath)" alt="@playlist.Name" />
+                    <h5>@playlist.Name</h5>
+                    <a href="@Url.Action("Details", "Playlist", new { id = playlist.Id })" class="stretched-link"></a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2>Popular Playlists</h2>
+    <div class="row">
+        @foreach (var playlist in Model.PopularPlaylists)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="playlist-card">
+                    <img src="@(string.IsNullOrEmpty(playlist.ImagePath) ? "/Content/Images/default-playlist.jpg" : playlist.ImagePath)" alt="@playlist.Name" />
+                    <h5>@playlist.Name</h5>
+                    <a href="@Url.Action("Details", "Playlist", new { id = playlist.Id })" class="stretched-link"></a>
+                </div>
+            </div>
+        }
+    </div>
 </div>
