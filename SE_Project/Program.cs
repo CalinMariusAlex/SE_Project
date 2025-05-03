@@ -5,13 +5,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<MyAppContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSession();
+
 
 builder.Services.AddDbContext<MyAppContext>(options =>
-    options.UseSqlServer(
+    options.UseMySQL(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 var app = builder.Build();
+
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,6 +38,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

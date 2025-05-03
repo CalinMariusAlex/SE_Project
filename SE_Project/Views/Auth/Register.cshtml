@@ -1,0 +1,20 @@
+﻿
+@model SE_Project.Models.User
+
+@{
+}
+
+<form asp-action="Register">
+    <input asp-for="FirstName" placeholder="FirstName" />
+    <input asp-for="LastName" placeholder="LastName" />
+    <input asp-for="Email" placeholder="Email" />
+    <input type="date" asp-for="BirthDate" />
+    <select asp-for="Role">
+        @foreach (var role in Enum.GetValues(typeof(Role)))
+        {
+            <option value="@role">@role</option>
+        }
+    </select>
+    <input type="password" name="password" placeholder="Password" />
+    <button type="submit">Register</button>
+</form>
