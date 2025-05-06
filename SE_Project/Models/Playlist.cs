@@ -1,4 +1,6 @@
-﻿namespace SE_Project.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SE_Project.Models
 {
     public class Playlist
     {
@@ -8,10 +10,16 @@
         public string ImagePath { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime LastModified { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public bool IsPublic { get; set; }
 
         public User User { get; set; }
         public ICollection<PlaylistSong> PlaylistSongs { get; set; }
+
+        public Playlist()
+        {
+            PlaylistSongs = new List<PlaylistSong>();
+        }
     }
 }
+

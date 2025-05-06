@@ -23,10 +23,13 @@ public class HomeController : Controller
         var viewModel = new HomeViewModel
         {
             Playlists = _context.Playlists.Where(p => p.IsPublic).Take(6).ToList(),
-            PopularPlaylists = _context.Playlists.Where(p => p.IsPublic)
-                .OrderByDescending(p => p.PlaylistSongs.Count).Take(6).ToList()
+            PopularPlaylists = _context.Playlists
+                .Include(p => p.PlaylistSongs)  // Include the related entity
+                .Where(p => p.IsPublic)
+                .OrderByDescending(p => p.PlaylistSongs.Count)
+                .Take(6)
+                .ToList()
         };
-
         return View(viewModel);
     }
 

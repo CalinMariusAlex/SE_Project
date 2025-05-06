@@ -35,5 +35,12 @@ namespace SE_Project.Models
 
         [Column(TypeName = "varchar(20)")]
         public Role? Role { get; set; }
+
+        public ICollection<Playlist> Playlists { get; set; }
+        public User()
+        {
+            Playlists = new List<Playlist>();
+        }
     }
+
 }

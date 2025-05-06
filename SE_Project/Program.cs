@@ -6,16 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<MyAppContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddSession();
-
-
-builder.Services.AddDbContext<MyAppContext>(options =>
-    options.UseMySQL(
+    options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+builder.Services.AddSession();
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MyAppContext>();
+    dbContext.Database.EnsureCreated(); // This will create the database if it doesn't exist
+}
 
 app.UseSession();
 
