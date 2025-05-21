@@ -1,0 +1,31 @@
+﻿@model List<SE_Project.Models.Song>
+@{
+    ViewData["Title"] = "Rezultate căutare";
+    Layout = "_LayoutHome";
+}
+
+<div class="container mt-4 text-white">
+    <h2 class="mb-4">🔍 Rezultate pentru căutarea ta</h2>
+
+    @if (!Model.Any())
+    {
+        <p>Nu am găsit nicio melodie.</p>
+    }
+    else
+    {
+        <div class="songs-row">
+            @foreach (var song in Model)
+            {
+                <div class="song-card"
+                     onclick="playSong(@song.Id, '@song.AudioUrl', '@song.Title', '@song.Artist', '@song.ThumbnailUrl')">
+                    <img src="@song.ThumbnailUrl" class="song-image" />
+                    <div class="song-title">@song.Title</div>
+                    <div class="song-artist text-white">@song.Artist</div>
+                    <div class="song-playcount text-white" style="font-size: 0.8em;">
+                        <i class="fa fa-play me-1"></i> @song.PlayCount ascultări
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

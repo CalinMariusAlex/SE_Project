@@ -1,37 +1,61 @@
 ﻿@{
-
     ViewData["Title"] = "Home Page";
-
     Layout = "_LayoutHome";
-
 }
 
-<div class="featured-content">
-    <h2>Playlists</h2>
-    <div class="row">
-        @foreach (var playlist in Model.Playlists)
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<h2>Melodii Recente</h2>
+<div class="songs-row">
+    @foreach (var song in ViewBag.RecentSongs)
+    {
+        var isFavorite = ((List<int>)ViewBag.FavoriteIds)?.Contains((int)song.Id) ?? false;
+
+        <div class="song-card" onclick="playSong(@song.Id, '@song.AudioUrl', '@song.Title', '@song.Artist', '@song.ThumbnailUrl')">
+            <img src="@song.ThumbnailUrl" class="song-image" />
+            <div class="song-title">@song.Title</div>
+            <div class="song-artist">@song.Artist</div>
+            <div class="song-playcount text-white" style="font-size: 0.8em;">
+                <i class="fa fa-play me-1"></i> @song.PlayCount ascultări
+
+                
+            </div>
+        </div>
+    }
+</div>
+
+<h2>Melodii în Trending</h2>
+
+<div class="position-relative">
+    <div class="trending-scroll d-flex overflow-auto py-2" id="trending-container" style="scroll-behavior: smooth;">
+        @foreach (var song in ViewBag.TrendingSongs)
         {
-            <div class="col-md-4 mb-4">
-                <div class="playlist-card">
-                    <img src="@(string.IsNullOrEmpty(playlist.ImagePath) ? "/Content/Images/default-playlist.jpg" : playlist.ImagePath)" alt="@playlist.Name" />
-                    <h5>@playlist.Name</h5>
-                    <a href="@Url.Action("Details", "Playlist", new { id = playlist.Id })" class="stretched-link"></a>
+            var isFavorite = ((List<int>)ViewBag.FavoriteIds)?.Contains((int)song.Id) ?? false;
+
+            <div class="song-card me-3 flex-shrink-0"
+                 onclick="playSong(@song.Id, '@song.AudioUrl', '@song.Title', '@song.Artist', '@song.ThumbnailUrl')"
+                 style="width: 180px;">
+                <img src="@song.ThumbnailUrl" class="song-image" />
+                <div class="song-title">@song.Title</div>
+                <div class="song-artist">@song.Artist</div>
+                <div class="song-playcount text-muted" style="font-size: 0.8em;">
+                    <i class="fa fa-play me-1"></i> @song.PlayCount ascultări
+
+                    
                 </div>
             </div>
         }
     </div>
 
-    <h2>Popular Playlists</h2>
-    <div class="row">
-        @foreach (var playlist in Model.PopularPlaylists)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="playlist-card">
-                    <img src="@(string.IsNullOrEmpty(playlist.ImagePath) ? "/Content/Images/default-playlist.jpg" : playlist.ImagePath)" alt="@playlist.Name" />
-                    <h5>@playlist.Name</h5>
-                    <a href="@Url.Action("Details", "Playlist", new { id = playlist.Id })" class="stretched-link"></a>
-                </div>
-            </div>
-        }
-    </div>
+    <!-- ▶️ Buton scroll dreapta -->
+    <button onclick="scrollTrendingRight()"
+            class="btn btn-success position-absolute top-50 end-0 translate-middle-y me-2"
+            style="z-index: 1;">
+        <i class="fa fa-chevron-right"></i>
+    </button>
 </div>
+
+

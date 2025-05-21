@@ -1,17 +1,15 @@
 ﻿namespace SE_Project.Models
 {
-    public class Song
+
+
+   public class Song
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Artist { get; set; }
-        public string Album { get; set; }
-        public string Genre { get; set; }
-        public string FilePath { get; set; }
-        public string ImagePath { get; set; }
-        public TimeSpan Duration { get; set; }
-        public DateTime DateAdded { get; set; }
-
-        public virtual ICollection<PlaylistSong> PlaylistSongs { get; set; }
+        public string ThumbnailUrl { get; set; }  // link poza
+        public string AudioUrl { get; set; }      // link fisier .mp3
+        public DateTime CreatedAt { get; set; }
+        public int PlayCount { get; set; }        // pentru trending
     }
 }

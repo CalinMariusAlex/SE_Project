@@ -17,22 +17,42 @@
 
     <!-- Custom CSS -->
     <link href="~/css/Site.css" rel="stylesheet" />
+
 </head>
-<body class="bg-dark text-white" style="font-family: 'Segoe UI', sans-serif;">
+<body class="bg-dark text-white d-flex flex-column" style="font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden;">
+    <div class="d-flex flex-column flex-grow-1" style="height: 100%; overflow: hidden;">
+
+
 
     <!-- Top Navigation -->
     <div class="d-flex justify-content-between align-items-center p-3" style="background-color: #2dc25e;">
-        <div class="d-flex align-items-center bg-dark rounded-pill px-3 py-2 flex-grow-1 mx-3" style="max-width: 600px;">
-            <i class="fa fa-search text-white me-2"></i>
-            <input type="text" class="form-control bg-transparent border-0 text-white" placeholder="Search Bar" />
-        </div>
-        <div class="bg-black text-white px-4 py-2 rounded me-3 fw-bold d-flex align-items-center">
-            <i class="fa fa-user-circle me-2"></i> My Account
-        </div>
+            <!-- Buton Home în stânga -->
+            <a href="/" class="text-white fw-bold me-3 d-flex align-items-center" style="text-decoration: none;">
+                <i class="fa fa-home me-1"></i> Home
+            </a>
+
+            <!-- 🔍 Centrare completă pe navbar -->
+            <div class="w-100 d-flex justify-content-center" style="background-color: #2dc25e;">
+                <form method="get" action="/Search/Results" class="d-flex align-items-center bg-dark rounded-pill px-3 py-2 my-2" style="width: 600px;">
+                    <i class="fa fa-search text-white me-2"></i>
+                    <input type="text" name="query" class="form-control bg-transparent border-0 text-white" placeholder="Caută melodii sau artiști..." />
+                </form>
+            </div>
+
+
+            <a href="@(User.Identity.IsAuthenticated ? "/Users/Index" : "/Users/Login")"
+               class="bg-black text-white px-4 py-2 rounded me-3 fw-bold d-flex align-items-center text-decoration-none">
+                <i class="fa fa-user-circle me-2"></i> My Account
+            </a>
+
     </div>
 
     <!-- Main Layout -->
-    <div class="d-flex" style="height: calc(100vh - 140px); overflow: hidden;">
+        <div class="d-flex flex-grow-1" style="flex: 1 1 auto; overflow: hidden;">
+
+
+
+
         <!-- Left Sidebar -->
         <div class="p-3 text-white" style="width: 250px; background-color: #2b2b2b;">
             <h5 class="text-success mb-3">Your Library</h5>
@@ -51,7 +71,8 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-grow-1 p-4" style="background-color: #1f1f1f; overflow-y: auto;">
+        <div class="flex-grow-1 p-4" style="background-color: #1f1f1f; overflow-y: auto; min-height: 0;">
+
             @RenderBody()
         </div>
 
@@ -67,25 +88,60 @@
     </div>
 
     <!-- Bottom Player -->
-    <div class="d-flex align-items-center justify-content-between p-3" style="background-color: black; border-top: 2px solid #2dc25e;">
-        <div class="d-flex align-items-center text-white">
-            <img id="mini-thumbnail" src="~/Content/Images/default-song.jpg" class="me-3" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px;" />
-            <div>
-                <div id="mini-title">Song Name</div>
-                <small id="mini-artist">Artist</small>
+    <div class="d-flex align-items-center justify-content-between px-4 py-2"
+         style="background-color: black; border-top: 2px solid #2dc25e; height: 80px;">
+
+            <!-- Left: Thumbnail + Info + Favorite -->
+            <div class="d-flex align-items-center text-white" style="min-width: 220px;">
+                <img id="mini-thumbnail"
+                     src="~/Content/Images/default-song.jpg"
+                     class="me-2"
+                     style="width: 48px; height: 48px; object-fit: cover; border-radius: 5px;" />
+
+                <div class="me-2">
+                    <div id="mini-title" class="fw-semibold">Song Name</div>
+                    <small id="mini-artist" class="text-white">Artist</small>
+                </div>
+
+                <!-- ❤️ Buton in footer -->
+                <button id="footer-fav-btn"
+                        class="btn btn-sm border-0 toggle-heart only-song-favorite"
+                        data-song-id=""
+                        title="Adaugă la favorite"
+                        style="color: white;">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            </div>
+
+
+        <!-- Center: Controls -->
+        <div class="d-flex flex-column align-items-center" style="width: 40%;">
+            <div class="mb-1">
+                <button id="prev-button" class="btn btn-outline-light btn-sm me-2">
+                    <i class="fa fa-step-backward"></i>
+                </button>
+                <button id="play-button" class="btn btn-outline-light btn-sm me-2">
+                    <i class="fa fa-play"></i>
+                </button>
+                <button id="next-button" class="btn btn-outline-light btn-sm">
+                    <i class="fa fa-step-forward"></i>
+                </button>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <small id="current-time" class="text-white me-2" style="min-width: 40px;">0:00</small>
+                <input type="range" id="progress-bar" class="form-range flex-grow-1" value="0" min="0" step="1" style="height: 4px;" />
+                <small id="total-time" class="text-white ms-2" style="min-width: 40px;">0:00</small>
             </div>
         </div>
-        <div>
-            <button id="prev-button" class="btn btn-outline-light me-2">
-                <i class="fa fa-step-backward"></i>
-            </button>
-            <button id="play-button" class="btn btn-outline-light me-2">
-                <i class="fa fa-play"></i>
-            </button>
-            <button id="next-button" class="btn btn-outline-light">
-                <i class="fa fa-step-forward"></i>
-            </button>
-        </div>
+
+            <!-- Right: Volume Control -->
+            <div class="d-flex align-items-center justify-content-end" style="min-width: 220px;">
+                <i class="fa fa-volume-up me-2"></i>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width: 100px;" />
+            </div>
+
+
+
         <div></div>
     </div>
 
@@ -94,5 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Scripts/player.js"></script>
     @RenderSection("scripts", required: false)
+    </div> <!-- închidere wrapper layout principal -->
+
 </body>
 </html>

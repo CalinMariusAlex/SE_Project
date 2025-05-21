@@ -1,0 +1,49 @@
+﻿@model SE_Project.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutHome";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width: 100%; max-width: 400px; border-radius: 15px;">
+        <h3 class="text-center mb-4">Autentificare</h3>
+
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" class="form-control bg-transparent text-white border-secondary" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Parolă</label>
+                <input asp-for="Password" type="password" class="form-control bg-transparent text-white border-secondary" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label">Ține-mă minte</label>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Login</button>
+        </form>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                Verifică informațiile introduse.
+            </div>
+        }
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div class="alert alert-danger">@error.ErrorMessage</div>
+        }
+
+
+        <div class="text-center mt-4">
+            <span>Nu ai cont?</span>
+            <a href="/Users/Register" class="text-decoration-none text-info fw-bold">Înregistrează-te</a>
+        </div>
+    </div>
+</div>

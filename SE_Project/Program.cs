@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SE_Project.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -10,6 +14,14 @@ builder.Services.AddDbContext<MyAppContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddEntityFrameworkStores<MyAppContext>();
+    
+
 builder.Services.AddSession();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
@@ -31,7 +43,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication(); // trebuie înainte de Authorization
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapStaticAssets();
 
