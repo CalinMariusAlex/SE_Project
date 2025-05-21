@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SE_Project.Data;
 using SE_Project.Models;
@@ -25,7 +26,7 @@ namespace SE_Project.Controllers
             if (int.TryParse(userIdString, out int userId))
             {
                 // Now, you can compare the int userId with the Playlist's UserId (which is of type int)
-                var playlists = _context.Playlists.Where(p => p.UserId == userId).ToList();
+                var playlists = _context.Playlists.Where(p => p.UserId == userIdString).ToList();
                 return View(playlists);
             }
 
@@ -41,25 +42,32 @@ namespace SE_Project.Controllers
         [HttpPost]
         public IActionResult CreatePlaylist(Playlist playlist)
         {
+
+            System.Diagnostics.Debug.WriteLine("CreatePlaylist POST called");
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            System.Diagnostics.Debug.WriteLine("UserIdString: " + userIdString + "Model is: "+ ModelState.IsValid);
+            System.Diagnostics.Debug.WriteLine("Modelul face figuri: err count "+ ModelState.ErrorCount);
+            
             if (ModelState.IsValid)
             {
-                // Convert the logged-in user's ID to int when creating the playlist
-                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (int.TryParse(userIdString, out int userId))
-                {
-                    playlist.UserId = userId;
-                    playlist.DateCreated = DateTime.Now;
-                    playlist.LastModified = DateTime.Now;
+                System.Diagnostics.Debug.WriteLine("E ntered If");
+                
+               
+                playlist.UserId = userIdString;
+                playlist.ImagePath = "none";
+                playlist.PlaylistSongs = null;
+                playlist.DateCreated = DateTime.Now;
+                playlist.LastModified = DateTime.Now;
 
-                    _context.Playlists.Add(playlist);
-                    _context.SaveChanges();
+                _context.Playlists.Add(playlist);
+                _context.SaveChanges();
 
-                    return RedirectToAction("Index");
-                }
-
-                // If parsing fails, return some error (or handle appropriately)
-                return RedirectToAction("Error", "Home"); // Or handle appropriately
+                System.Diagnostics.Debug.WriteLine("Right Befroe redirect");
+                return RedirectToAction("Index", "Home");
+                
             }
+            System.Diagnostics.Debug.WriteLine("Right Befroe nothing");
             return View(playlist);
         }
 

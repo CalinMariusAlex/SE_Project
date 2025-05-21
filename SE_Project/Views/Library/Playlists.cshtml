@@ -1,0 +1,33 @@
+﻿@model List<SE_Project.Models.Playlist>
+@{
+    ViewData["Title"] = "Your Playlists";
+    Layout = "_LayoutHome";
+}
+
+<div class="container mt-4 text-white">
+    <h2 class="mb-4">🎧 Playlists</h2>
+
+    <div id="no-playlists-message" class="text-muted" style="display: @(Model.Any() ? "none" : "block")">
+        <p>Nu ai playlisturi create încă.</p>
+    </div>
+
+    <div class="row" id="playlists-container">
+        @foreach (var playlist in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark text-white h-100 border border-success" style="cursor: pointer;"
+                     onclick="location.href='@Url.Action("PlaylistDetails", "Library", new { id = playlist.Id })'">
+                    <div class="card-body">
+                        <h5 class="card-title">@playlist.Name</h5>
+                        <p class="card-text text-muted" style="font-size: 0.9em;">
+                            @playlist.Description
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 text-success" style="font-size: 0.8em;">
+                        Created: @playlist.DateCreated.ToShortDateString()
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
