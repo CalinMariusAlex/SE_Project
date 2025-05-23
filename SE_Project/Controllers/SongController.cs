@@ -86,7 +86,12 @@ namespace SE_Project.Controllers
             }
         }
 
-
+        //[HttpGet]
+        //public IActionResult AddSongToGivenPlaylist(Playlist playlist)
+        //{
+        //    var songs = _context.Songs.ToList();
+        //    return View(playlist);
+        //}
 
 
     }

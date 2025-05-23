@@ -1,0 +1,28 @@
+﻿@model AddSongToPlaylistViewModel
+@{
+    Layout = "_LayoutHome";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var song in Model.Songs)
+        {
+            <tr>
+
+                <td>@song.Title</td>
+                <td>
+                    <a asp-action="AddSong" asp-route-songId="@song.Id" asp-route-playlistId="@Model.Playlist.Id">Add</a>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+
+</table>

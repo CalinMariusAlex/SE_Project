@@ -1,4 +1,4 @@
-﻿@model List<SE_Project.Models.Song>
+﻿@model List<SE_Project.Models.Song> 
 @{
     ViewData["Title"] = "Favoritele Mele";
     Layout = "_LayoutHome";
@@ -14,18 +14,21 @@
     <div class="songs-row" id="favorites-container">
         @foreach (var song in Model)
         {
-            <div class="song-card favorite-card" id="fav-song-@song.Id"
-                 onclick="playSong(@song.Id, '@song.AudioUrl', '@song.Title', '@song.Artist', '@song.ThumbnailUrl')">
 
-                <img src="@song.ThumbnailUrl" class="song-image" />
-                <div class="song-title">@song.Title</div>
-                <div class="song-artist">@song.Artist</div>
-                <div class="song-playcount text-muted" style="font-size: 0.8em;">
-                    <i class="fa fa-play me-1"></i> @song.PlayCount ascultări
+                <div class="song-card favorite-card" id="fav-song-@song.Id"
+                     onclick="playSong(@song.Id, '@song.AudioUrl', '@song.Title', '@song.Artist', '@song.ThumbnailUrl')">
 
-                   
+                    <img src="@song.ThumbnailUrl" class="song-image" />
+                    <div class="song-title">@song.Title</div>
+                    <div class="song-artist">@song.Artist</div>
+                    <div class="song-playcount text-muted" style="font-size: 0.8em;">
+                        <i class="fa fa-play me-1"></i> @song.PlayCount ascultări
+
+
+                    </div>
                 </div>
-            </div>
+            
+            
         }
     </div>
 </div>

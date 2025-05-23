@@ -15,6 +15,12 @@
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
+    <div class="form-group mb-3">
+        <label asp-for="ImagePath">Image Path</label>
+        <input asp-for="ImagePath" class="form-control" />
+        <span asp-validation-for="ImagePath" class="text-danger"></span>
+    </div>
+
         <div class="form-group mb-3">
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-control"></textarea>
@@ -26,6 +32,8 @@
             <input asp-for="IsPublic" class="form-check-input ms-2" type="checkbox" />
             <span asp-validation-for="IsPublic" class="text-danger"></span>
         </div>
+
+
 
         <button type="submit" class="btn btn-success mt-3">Create Playlist</button>
     </form>

@@ -1,3 +1,34 @@
-﻿
+﻿@model List<SE_Project.Models.Playlist>
 @{
+    Layout = "_LayoutHome";
 }
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Col2</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var playlist in Model)
+        {
+            <tr>
+               
+                    <td>@playlist.Name</td>
+               
+                    <td>@playlist.PlaylistSongs</td>
+                    <td>@playlist.IsPublic</td>
+                    <td>
+                    <a asp-action="AddSong" asp-route-id="@playlist.Id">Add Song</a> @* without id? *@
+                    <a asp-action="Edit" asp-route-id="@playlist.Id">Edit Playlist</a>
+                    <a asp-action="Delete" asp-route-id="@playlist.Id">Delete Playlist</a>
+                    </td>
+                    
+                
+            </tr>
+        }
+    </tbody>
+
+</table>
