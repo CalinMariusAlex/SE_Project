@@ -1,4 +1,4 @@
-﻿@model List<SE_Project.Models.Playlist>
+﻿@model List<Playlist>
 @{
     Layout = "_LayoutHome";
 }
@@ -17,13 +17,9 @@
             <tr>
                
                     <td>@playlist.Name</td>
-               
-                    <td>@playlist.PlaylistSongs</td>
-                    <td>@playlist.IsPublic</td>
+              
                     <td>
-                    <a asp-action="AddSong" asp-route-id="@playlist.Id">Add Song</a> @* without id? *@
-                    <a asp-action="Edit" asp-route-id="@playlist.Id">Edit Playlist</a>
-                    <a asp-action="Delete" asp-route-id="@playlist.Id">Delete Playlist</a>
+                    <a asp-controller="Library" asp-action="AddSong" asp-route-id="@playlist.Id" class="btn btn-primary">Add Songs</a>
                     </td>
                     
                 

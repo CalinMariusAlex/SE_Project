@@ -24,8 +24,8 @@
 
 
 
-    <!-- Top Navigation -->
-    <div class="d-flex justify-content-between align-items-center p-3" style="background-color: #2dc25e;">
+        <!-- Top Navigation -->
+        <div class="d-flex justify-content-between align-items-center p-3" style="background-color: #2dc25e;">
             <!-- Buton Home în stânga -->
             <a href="/" class="text-white fw-bold me-3 d-flex align-items-center" style="text-decoration: none;">
                 <i class="fa fa-home me-1"></i> Home
@@ -41,21 +41,36 @@
 
 
             <a href="@(User.Identity.IsAuthenticated ? "/Users/Index" : "/Users/Login")"
-               class="bg-black text-white px-4 py-2 rounded me-3 fw-bold d-flex align-items-center text-decoration-none">
+            class="bg-black text-white px-4 py-2 rounded me-3 fw-bold d-flex align-items-center text-decoration-none">
                 <i class="fa fa-user-circle me-2"></i> My Account
             </a>
 
-    </div>
+        </div>
 
-    <!-- Main Layout -->
+        <!-- Main Layout -->
         <div class="d-flex flex-grow-1" style="flex: 1 1 auto; overflow: hidden;">
 
 
 
 
-        <!-- Left Sidebar -->
-        <div class="p-3 text-white" style="width: 250px; background-color: #2b2b2b;">
-            <h5 class="text-success mb-3">Your Library</h5>
+            <!-- Left Sidebar -->
+            <div class="p-3 text-white" style="width: 250px; background-color: #2b2b2b;">
+                <h5 class="text-success mb-3">Your Library</h5>
+
+                @if(User.Identity.IsAuthenticated)
+                {
+                    var playlists = ViewData["Playlists"] as List<Playlist>;
+                    @if(playlists != null)
+                    {
+                    @foreach (var playlist in playlists)
+                    {
+                        <div class="list-group-item">
+                            <a asp-action="PlaylistDetails" asp-controller="Library" asp-route-id="@playlist.Id">@playlist.Name</a>
+                        </div>
+                    }
+                    }
+                    
+                }
 
             <!-- Playlist list -->
             <vc:user-playlists></vc:user-playlists>

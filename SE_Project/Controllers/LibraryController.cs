@@ -17,6 +17,7 @@ namespace SE_Project.Controllers
         {
             _context = context;
         }
+        
 
         public IActionResult Index()
         {
@@ -29,6 +30,46 @@ namespace SE_Project.Controllers
             var playlists = _context.Playlists.Where(p => p.UserId == userIdString).ToList();
             return View(playlists);
             
+        }
+
+        public IActionResult Playlists()
+        {
+            // Get the logged-in user's ID from Claims as a string
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Convert userIdString (string) to an int
+
+            // Now, you can compare the int userId with the Playlist's UserId (which is of type int)
+            var playlists = _context.Playlists.Where(p => p.UserId == userIdString).ToList();
+            return View(playlists);
+        }
+
+        public IActionResult PlaylistDetails(int id)
+        {
+            System.Diagnostics.Debug.WriteLine("entered details");
+            
+            var songs = _context.PlaylistSongs.Where(p => p.PlaylistId == id).ToList();
+            System.Diagnostics.Debug.WriteLine("songs: " + songs.Count);
+
+            foreach (var song in songs)
+            {
+                System.Diagnostics.Debug.WriteLine("SongP Id: " + song.Id);
+
+                song.Song = _context.Songs.Find(song.SongId);
+                song.Playlist = _context.Playlists.Find(song.PlaylistId);
+
+                if(song.Song == null || song.Playlist == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("song is null");
+                    return View("Error","Home");
+                }
+
+                
+
+            }
+            ViewBag.RecentSongs = songs;
+            
+            return View(songs);
         }
 
         public IActionResult CreatePlaylist()
@@ -106,12 +147,18 @@ namespace SE_Project.Controllers
 
         }
 
-
+        
         public IActionResult AddSong(int id)
         {
 
             var songs = _context.Songs.ToList();
             var playlist = _context.Playlists.FirstOrDefault(p => p.Id == id);
+            if (playlist == null)
+            {
+                System.Diagnostics.Debug.WriteLine("playlist is null");
+                System.Diagnostics.Debug.WriteLine("playlistId: "+ id);
+                return RedirectToAction("Error", "Home"); // or 404
+            }
             var viewModel = new AddSongToPlaylistViewModel
             {
                 Songs = songs,
@@ -127,17 +174,30 @@ namespace SE_Project.Controllers
             if(ModelState.IsValid)
             {
                 var song = _context.Songs.Find(songId);
-                var playlist = _context.Playlists.Find(playlistId);
+                var playlist = _context.Playlists
+    .Include(p => p.PlaylistSongs)
+    .FirstOrDefault(p => p.Id == playlistId);
 
-                PlaylistSong Psong = new PlaylistSong();
-                Psong.Song = song;
-                Psong.Playlist = playlist;
-                Psong.PlaylistId = playlist.Id;
-                Psong.SongId = song.Id;
-                Psong.Order = playlist.PlaylistSongs.ToList().Count;
+
+                if (song == null || playlist == null)
+                {
+                    return RedirectToAction("Error", "Home"); // or show a message
+                }
+
+
+                var order = playlist.PlaylistSongs?.Count ?? 0;
+
+                var Psong = new PlaylistSong
+                {
+                    Song = song,
+                    Playlist = playlist,
+                    PlaylistId = playlist.Id,
+                    SongId = song.Id,
+                    Order = order
+                };
 
                 _context.PlaylistSongs.Add(Psong);
-                _context.PlaylistSongs.Update(Psong);
+             
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
@@ -151,6 +211,5 @@ public class AddSongToPlaylistViewModel
     public List<Song> Songs { get; set; }
     public Playlist Playlist { get; set; }
 
-    // Optional: for dropdowns or UI choices
-    public List<Playlist> AllPlaylists { get; set; }
+ 
 }

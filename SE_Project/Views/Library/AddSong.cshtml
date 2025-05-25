@@ -17,7 +17,12 @@
 
                 <td>@song.Title</td>
                 <td>
-                    <a asp-action="AddSong" asp-route-songId="@song.Id" asp-route-playlistId="@Model.Playlist.Id">Add</a>
+                    <form asp-action="AddSong" method="post">
+                        <input type="hidden" name="songId" value="@song.Id" />
+                        <input type="hidden" name="playlistId" value="@Model.Playlist.Id" />
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                    @* <a asp-action="AddSong" asp-route-songId="@song.Id" asp-route-playlistId="@Model.Playlist.Id">Add</a> *@
                 </td>
 
 

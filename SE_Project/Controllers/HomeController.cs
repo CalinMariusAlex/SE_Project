@@ -45,6 +45,7 @@ namespace SE_Project.Controllers
                     .ToList();
 
                 ViewBag.FavoriteIds = favoriteIds;
+                ViewData["Playlists"] = _context.Playlists.Where(p => p.UserId == userId).ToList();
             }
 
             return View();
